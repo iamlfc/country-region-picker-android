@@ -250,4 +250,5 @@
     <string name="name_za">남아프리카</string>
     <string name="name_zm">잠비아</string>
     <string name="name_zw">짐바브웨</string>
+    <string name="location">Location</string>
 </resources>

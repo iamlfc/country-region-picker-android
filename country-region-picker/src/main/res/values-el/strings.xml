@@ -250,4 +250,5 @@
     <string name="name_za">Νότια Αφρική</string>
     <string name="name_zm">Ζάμπια</string>
     <string name="name_zw">Ζιμπάμπουε</string>
+    <string name="location">Location</string>
 </resources>

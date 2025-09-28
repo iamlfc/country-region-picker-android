@@ -250,4 +250,5 @@
     <string name="name_za">南非</string>
     <string name="name_zm">赞比亚</string>
     <string name="name_zw">津巴布韦</string>
+    <string name="location">位置</string>
 </resources>
