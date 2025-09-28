@@ -250,4 +250,5 @@
     <string name="name_za">სამხრეთ აფრიკის რესპუბლიკა</string>
     <string name="name_zm">ზამბია</string>
     <string name="name_zw">ზიმბაბვე</string>
+    <string name="location">Location</string>
 </resources>

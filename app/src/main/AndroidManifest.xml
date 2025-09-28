@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.sahooz.library.countryregionpicker.sample.MainActivity"
+        <activity
+            android:name="com.sahooz.library.countryregionpicker.sample.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,10 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.sahooz.library.countryregionpicker.PickActivity"
+        <activity
+            android:name="com.sahooz.library.countryregionpicker.PickActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustPan"
-            android:label="@string/pick_country_or_region"/>
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

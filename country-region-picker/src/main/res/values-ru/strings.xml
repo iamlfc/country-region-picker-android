@@ -250,4 +250,5 @@
     <string name="name_za">ЮАР</string>
     <string name="name_zm">Замбия</string>
     <string name="name_zw">Зимбабве</string>
+    <string name="location">Location</string>
 </resources>

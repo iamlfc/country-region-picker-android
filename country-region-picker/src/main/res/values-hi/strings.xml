@@ -250,4 +250,5 @@
     <string name="name_za">दक्षिण अफ्रीका</string>
     <string name="name_zm">जांबिया</string>
     <string name="name_zw">जिंबावे</string>
+    <string name="location">Location</string>
 </resources>

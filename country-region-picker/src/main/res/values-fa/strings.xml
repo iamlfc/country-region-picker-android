@@ -250,4 +250,5 @@
     <string name="name_za">افریقای جنوبی</string>
     <string name="name_zm">زامبیا</string>
     <string name="name_zw">زیمبابوه</string>
+    <string name="location">Location</string>
 </resources>

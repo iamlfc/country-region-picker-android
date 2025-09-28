@@ -250,4 +250,5 @@
     <string name="name_za">Suráfrica</string>
     <string name="name_zm">Zambia</string>
     <string name="name_zw">Zimbabwe</string>
+    <string name="location">Location</string>
 </resources>

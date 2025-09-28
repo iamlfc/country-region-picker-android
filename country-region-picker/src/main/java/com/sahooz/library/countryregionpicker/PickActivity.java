@@ -3,18 +3,20 @@ package com.sahooz.library.countryregionpicker;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,20 +30,39 @@ public class PickActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pick);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().hide();
+        }
+
         RecyclerView rvPick = findViewById(R.id.rv_pick);
         SideBar side = findViewById(R.id.side);
         EditText etSearch = findViewById(R.id.et_search);
         TextView tvLetter = findViewById(R.id.tv_letter);
+        ImageView imgBack = findViewById(R.id.imgBack);
+        imgBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
         allCountries.clear();
         allCountries.addAll(CountryOrRegion.getAll());
         selectedCountries.clear();
         selectedCountries.addAll(allCountries);
         final CAdapter adapter = new CAdapter(selectedCountries);
+        adapter.setItemCodeSHow(false);
         rvPick.setAdapter(adapter);
         LinearLayoutManager manager = new LinearLayoutManager(this);
         rvPick.setLayoutManager(manager);
         rvPick.setAdapter(adapter);
-        rvPick.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+//        rvPick.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        rvPick.addItemDecoration( new CustomDividerItemDecoration(
+                this,         // Context
+                14,           // 左间距 dp
+                14,           // 右间距 dp
+                0.5f,            // 分割线高度 dp
+                Color.parseColor("#1a000000") // 分割线颜色
+        ));
         etSearch.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
@@ -81,9 +102,14 @@ public class PickActivity extends AppCompatActivity {
     }
 
     class CAdapter extends PyAdapter<RecyclerView.ViewHolder> {
+        private boolean isSHowCountryCOde = true;
 
         public CAdapter(List<? extends PyEntity> entities) {
             super(entities, '#');
+        }
+
+        public void setItemCodeSHow(boolean isShow) {
+            isSHowCountryCOde = isShow;
         }
 
         @Override
@@ -100,10 +126,19 @@ public class PickActivity extends AppCompatActivity {
         @Override
         public void onBindHolder(RecyclerView.ViewHolder holder, PyEntity entity, int position) {
             VH vh = (VH)holder;
+
+
             final CountryOrRegion countryOrRegion = (CountryOrRegion)entity;
             vh.ivFlag.setImageResource(countryOrRegion.flag);
             vh.tvName.setText(countryOrRegion.translate);
-            vh.tvCode.setText("+" + countryOrRegion.code);
+            if (isSHowCountryCOde) {
+                vh.tvCode.setVisibility(View.VISIBLE);
+                vh.tvCode.setText("+" + countryOrRegion.code);
+
+            }else {
+                vh.tvCode.setVisibility(View.GONE);
+
+            }
             holder.itemView.setOnClickListener(v -> {
                 Intent data = new Intent();
                 data.putExtra("country", countryOrRegion.toJson());

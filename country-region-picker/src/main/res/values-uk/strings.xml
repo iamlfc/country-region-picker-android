@@ -250,4 +250,5 @@
     <string name="name_za">ПАР</string>
     <string name="name_zm">Замбія</string>
     <string name="name_zw">Зімбабве</string>
+    <string name="location">Location</string>
 </resources>

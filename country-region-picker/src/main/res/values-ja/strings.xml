@@ -250,4 +250,5 @@
     <string name="name_za">南アフリカ</string>
     <string name="name_zm">ザンビア</string>
     <string name="name_zw">ジンバブエ</string>
+    <string name="location">Location</string>
 </resources>

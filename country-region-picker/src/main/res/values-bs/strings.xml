@@ -250,4 +250,5 @@
     <string name="name_za">Južnoafrička Republika</string>
     <string name="name_zm">Zambija</string>
     <string name="name_zw">Zimbabve</string>
+    <string name="location">Location</string>
 </resources>
