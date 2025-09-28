@@ -1,9 +1,9 @@
 package com.sahooz.library.countryregionpicker;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,6 +11,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -135,4 +136,63 @@ public class CountryOrRegion implements PyEntity {
     public String getPinyin() {
         return pinyin;
     }
+
+    /**
+     *  获取 国旗
+     * @param ctx
+     * @param keyWord  国家名称/国家code
+     * @return   国旗id
+     */
+    public static int getFlagResIdByCountry(Context ctx, String keyWord) {
+        boolean isCode = !TextUtils.isEmpty(keyWord) && TextUtils.isDigitsOnly(keyWord);
+        if (countryOrRegions != null && !countryOrRegions.isEmpty()) {
+            for (CountryOrRegion cor : countryOrRegions) {
+                if (isCode) {
+                    if (keyWord.equals(String.valueOf(cor.code))) {
+                        return cor.flag;
+                    }
+                } else {
+                    if (keyWord.equalsIgnoreCase(cor.name)) {
+                        return cor.flag;
+                    }
+                }
+            }
+            return 0;
+        }
+        // countryOrRegions 为空时，兼容首次调用，仍然读取 code.json
+        try {
+            InputStream is = ctx.getAssets().open("code.json");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            String json = new String(buffer, "UTF-8");
+            JSONArray array = new JSONArray(json);
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject jo = array.getJSONObject(i);
+                if (isCode) {
+                    if (keyWord.equals(String.valueOf(jo.getInt("code")))) {
+                        String locale = jo.getString("locale");
+                        if (!TextUtils.isEmpty(locale)) {
+                            return ctx.getResources().getIdentifier("flag_" + locale.toLowerCase(), "drawable", ctx.getPackageName());
+                        }
+                    }
+                } else {
+                    if (keyWord.equalsIgnoreCase(jo.getString("name"))) {
+                        String locale = jo.getString("locale");
+                        if (!TextUtils.isEmpty(locale)) {
+                            return ctx.getResources().getIdentifier("flag_" + locale.toLowerCase(), "drawable", ctx.getPackageName());
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+
+
+
 }

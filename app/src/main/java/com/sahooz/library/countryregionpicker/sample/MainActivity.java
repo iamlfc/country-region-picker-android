@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView ivFlag;
     private TextView tvName;
     private TextView tvCode;
+    private EditText etInput;
+    private ImageView imgResult;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
         ivFlag = findViewById(R.id.iv_flag);
         tvName = findViewById(R.id.tv_name);
         tvCode = findViewById(R.id.tv_code);
+        etInput = findViewById(R.id.etInput);
+        imgResult = findViewById(R.id.imgResult);
 
         try {
             CountryOrRegion.load(this);
@@ -43,13 +48,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void click(View view) {
-        if(view.getId() == R.id.btnDialog)
+        if (view.getId() == R.id.btnDialog)
             PickFragment.newInstance(country -> {
-                if(country.flag != 0) ivFlag.setImageResource(country.flag);
+                if (country.flag != 0) ivFlag.setImageResource(country.flag);
                 tvName.setText(country.name + "(" + country.translate + ")");
                 tvCode.setText("+" + country.code);
             }).show(getSupportFragmentManager(), "country");
-        else {
+        else if (view.getId() == R.id.btn) {
+            String strInfo = etInput.getText().toString().trim();
+            if (strInfo.isEmpty()) return;
+            int resultResID = CountryOrRegion.getFlagResIdByCountry(this,  strInfo);
+            if (resultResID != 0) {
+                imgResult.setImageResource(resultResID);
+            }
+        } else {
             startActivityForResult(new Intent(getApplicationContext(), PickActivity.class), 111);
         }
     }
@@ -57,10 +69,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 111 && resultCode == Activity.RESULT_OK) {
+        if (requestCode == 111 && resultCode == Activity.RESULT_OK) {
             CountryOrRegion countryOrRegion = CountryOrRegion.fromJson(data.getStringExtra("country"));
             assert countryOrRegion != null;
-            if(countryOrRegion.flag != 0) ivFlag.setImageResource(countryOrRegion.flag);
+            if (countryOrRegion.flag != 0) ivFlag.setImageResource(countryOrRegion.flag);
             tvName.setText(countryOrRegion.name + "(" + countryOrRegion.translate + ")");
             tvCode.setText("+" + countryOrRegion.code);
         }
