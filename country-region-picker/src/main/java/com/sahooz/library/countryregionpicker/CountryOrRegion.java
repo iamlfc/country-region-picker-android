@@ -49,12 +49,12 @@ public class CountryOrRegion implements PyEntity {
                 '}';
     }
 
-    public static ArrayList<CountryOrRegion> getAll(){
+    public static ArrayList<CountryOrRegion> getAll() {
         return new ArrayList<>(countryOrRegions);
     }
 
-    public static CountryOrRegion fromJson(String json){
-        if(TextUtils.isEmpty(json)) return null;
+    public static CountryOrRegion fromJson(String json) {
+        if (TextUtils.isEmpty(json)) return null;
         try {
             JSONObject jo = new JSONObject(json);
             return new CountryOrRegion(
@@ -101,7 +101,7 @@ public class CountryOrRegion implements PyEntity {
             int flag = 0;
             String translate = "";
             String locale = jo.getString("locale");
-            if(!TextUtils.isEmpty(locale)) {
+            if (!TextUtils.isEmpty(locale)) {
                 flag = ctx.getResources().getIdentifier("flag_" + locale.toLowerCase(), "drawable", ctx.getPackageName());
                 translate = ctx.getString(ctx.getResources().getIdentifier("name_" + locale.toLowerCase(), "string", ctx.getPackageName()));
             }
@@ -109,14 +109,14 @@ public class CountryOrRegion implements PyEntity {
             Locale defaultLoc = Locale.getDefault();
             boolean inChina = "zh".equalsIgnoreCase(defaultLoc.getLanguage());
             countryOrRegions.add(
-                new CountryOrRegion(
-                    jo.getInt("code"),
-                    name,
-                    translate,
-                    inChina ? jo.getString("pinyin") : name,
-                    locale,
-                    flag
-                )
+                    new CountryOrRegion(
+                            jo.getInt("code"),
+                            name,
+                            translate,
+                            inChina ? jo.getString("pinyin") : name,
+                            locale,
+                            flag
+                    )
             );
         }
 
@@ -132,27 +132,35 @@ public class CountryOrRegion implements PyEntity {
         return code;
     }
 
-    @NonNull @Override
+    @NonNull
+    @Override
     public String getPinyin() {
         return pinyin;
     }
 
     /**
-     *  获取 国旗
+     * 获取 国旗
+     *
      * @param ctx
-     * @param keyWord  国家名称/国家code
-     * @return   国旗id
+     * @param keyWord 国家名称/国家code
+     * @param type    1  name 国家名称  eg: china  2 code 国家code  eg:86  3 locale 国家地区码  eg：CN
+     * @return 国旗id
      */
-    public static int getFlagResIdByCountry(Context ctx, String keyWord) {
-        boolean isCode = !TextUtils.isEmpty(keyWord) && TextUtils.isDigitsOnly(keyWord);
+    public static int getFlagResIdByCountry(Context ctx, String keyWord, int type) {
+//        boolean isCode = !TextUtils.isEmpty(keyWord) && TextUtils.isDigitsOnly(keyWord);
         if (countryOrRegions != null && !countryOrRegions.isEmpty()) {
             for (CountryOrRegion cor : countryOrRegions) {
-                if (isCode) {
+                if (type == 1) {
+                    if (keyWord.equalsIgnoreCase(cor.name)) {
+                        return cor.flag;
+                    }
+
+                } else if (type == 2) {
                     if (keyWord.equals(String.valueOf(cor.code))) {
                         return cor.flag;
                     }
-                } else {
-                    if (keyWord.equalsIgnoreCase(cor.name)) {
+                } else if (type == 3) {
+                    if (keyWord.equalsIgnoreCase(cor.locale)) {
                         return cor.flag;
                     }
                 }
@@ -170,15 +178,25 @@ public class CountryOrRegion implements PyEntity {
             JSONArray array = new JSONArray(json);
             for (int i = 0; i < array.length(); i++) {
                 JSONObject jo = array.getJSONObject(i);
-                if (isCode) {
+                if (type == 1) {
+
+                    if (keyWord.equalsIgnoreCase(jo.getString("name"))) {
+                        String locale = jo.getString("locale");
+                        if (!TextUtils.isEmpty(locale)) {
+                            return ctx.getResources().getIdentifier("flag_" + locale.toLowerCase(), "drawable", ctx.getPackageName());
+                        }
+                    }
+
+                } else if (type == 2) {
                     if (keyWord.equals(String.valueOf(jo.getInt("code")))) {
                         String locale = jo.getString("locale");
                         if (!TextUtils.isEmpty(locale)) {
                             return ctx.getResources().getIdentifier("flag_" + locale.toLowerCase(), "drawable", ctx.getPackageName());
                         }
                     }
-                } else {
-                    if (keyWord.equalsIgnoreCase(jo.getString("name"))) {
+                } else if (type == 3) {
+                    if (keyWord.equalsIgnoreCase(jo.getString("locale"))) {
+
                         String locale = jo.getString("locale");
                         if (!TextUtils.isEmpty(locale)) {
                             return ctx.getResources().getIdentifier("flag_" + locale.toLowerCase(), "drawable", ctx.getPackageName());
@@ -191,8 +209,6 @@ public class CountryOrRegion implements PyEntity {
         }
         return 0;
     }
-
-
 
 
 }
