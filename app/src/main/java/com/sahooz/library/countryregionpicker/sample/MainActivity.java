@@ -57,10 +57,15 @@ public class MainActivity extends AppCompatActivity {
         else if (view.getId() == R.id.btn) {
             String strInfo = etInput.getText().toString().trim();
             if (strInfo.isEmpty()) return;
-            int resultResID = CountryOrRegion.getFlagResIdByCountry(this,  strInfo,3);
+            int resultResID = CountryOrRegion.getFlagResIdByCountry(this, strInfo);
             if (resultResID != 0) {
                 imgResult.setImageResource(resultResID);
             }
+        } else if (view.getId() == R.id.btn1) {
+            String strInfo = etInput.getText().toString().trim();
+            if (strInfo.isEmpty()) return;
+            String strName = CountryOrRegion.getNameByCodeOrLocale(this, strInfo);
+            etInput.setText(strName);
         } else {
             startActivityForResult(new Intent(getApplicationContext(), PickActivity.class), 111);
         }

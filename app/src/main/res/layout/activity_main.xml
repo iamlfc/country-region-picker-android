@@ -27,7 +27,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="输入国家名称" />
-
+    <Button
+        android:id="@+id/btn1"
+        android:onClick="click"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="查询国家" />
     <Button
         android:id="@+id/btn"
         android:onClick="click"
