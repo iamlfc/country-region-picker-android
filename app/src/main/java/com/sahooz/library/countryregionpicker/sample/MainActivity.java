@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         else if (view.getId() == R.id.btn) {
             String strInfo = etInput.getText().toString().trim();
             if (strInfo.isEmpty()) return;
-            int resultResID = CountryOrRegion.getFlagResIdByCountry(this,  strInfo);
+            int resultResID = CountryOrRegion.getFlagResIdByCountry(this,  strInfo,3);
             if (resultResID != 0) {
                 imgResult.setImageResource(resultResID);
             }
